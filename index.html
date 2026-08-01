@@ -89,6 +89,44 @@
     margin-top: 32px;
   }
   a { color: var(--accent); }
+
+  .agree-box {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 16px;
+    margin-top: 24px;
+    text-align: center;
+  }
+  .agree-box p {
+    margin: 0 0 14px;
+    font-size: 0.95rem;
+  }
+  .agree-btn {
+    display: inline-block;
+    width: 100%;
+    max-width: 320px;
+    padding: 14px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    border: none;
+    background: #cccccc;
+    color: #ffffff;
+    text-decoration: none;
+    pointer-events: none;
+    transition: background 0.2s;
+  }
+  .agree-btn.enabled {
+    background: var(--accent);
+    pointer-events: auto;
+    cursor: pointer;
+  }
+  .agree-hint {
+    color: var(--muted);
+    font-size: 0.82rem;
+    margin-top: 10px;
+  }
 </style>
 </head>
 <body>
@@ -223,10 +261,39 @@
     </ul>
   </section>
 
+  <div class="agree-box">
+    <p>以上の内容をすべてお読みいただいた方は、下のボタンから同意フォームにお進みください。</p>
+    <a id="agreeBtn" class="agree-btn" href="https://forms.gle/EWbs6bihkjmxCxzu6" target="_blank" rel="noopener">同意する</a>
+    <p class="agree-hint" id="agreeHint">※ページの最後まで読むとボタンが有効になります</p>
+  </div>
+
   <footer>
     <p>最終更新日：2026年8月1日</p>
   </footer>
 
 </div>
+
+<script>
+  (function () {
+    var btn = document.getElementById('agreeBtn');
+    var hint = document.getElementById('agreeHint');
+    var unlocked = false;
+
+    function checkScroll() {
+      if (unlocked) return;
+      var scrolledToBottom =
+        window.innerHeight + window.scrollY >= document.body.offsetHeight - 40;
+      if (scrolledToBottom) {
+        unlocked = true;
+        btn.classList.add('enabled');
+        hint.style.display = 'none';
+      }
+    }
+
+    window.addEventListener('scroll', checkScroll);
+    window.addEventListener('resize', checkScroll);
+    checkScroll(); // ページが短くて最初から見えている場合も考慮
+  })();
+</script>
 </body>
 </html>
